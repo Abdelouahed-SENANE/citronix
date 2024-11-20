@@ -10,6 +10,8 @@ import ma.senane.utilities.entities.BaseEntity;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "trees")
@@ -26,8 +28,15 @@ public class Tree extends BaseEntity {
     @JoinColumn(name = "field_id")
     private Field field;
 
+    @OneToMany(mappedBy = "tree" , fetch = FetchType.EAGER)
+    List<TreeHarvest> treeHarvests = new ArrayList<>();
+
+
     public boolean isProductive() {
         int age =  Period.between(this.plantingDate, LocalDate.now()).getYears();
         return age <= 20;
     }
+
+
+
 }

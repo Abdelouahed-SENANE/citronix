@@ -17,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Month;
 
 @Service
@@ -52,11 +53,16 @@ public class TreeServiceImpl implements TreeService {
 
         Tree tree = repository.findById(treeId).orElseThrow(() -> new TreeNotFoundException("Tree not found."));
 
+        if (!isPlanting(updateDTO.plantingDate())) {
+            throw new IllegalStateException("Planting is only allowed between March and May.");
+        }
         Tree toTree = mapper.fromUpdateDTO(updateDTO);
-        toTree.setId(treeId);
-        toTree.getUpdatedAt();
 
-        return mapper.toResponseDTO(repository.save(tree));
+        toTree.setId(treeId);
+        toTree.setUpdatedAt(LocalDateTime.now());
+        toTree.setField(tree.getField());
+
+        return mapper.toResponseDTO(repository.save(toTree));
 
     }
 

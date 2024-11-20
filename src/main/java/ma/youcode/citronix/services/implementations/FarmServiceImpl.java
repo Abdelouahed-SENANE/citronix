@@ -20,6 +20,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static ma.youcode.citronix.repositories.specification.FarmSpecification.filterFarm;
@@ -48,7 +49,7 @@ public class FarmServiceImpl  implements FarmService {
 
         Farm toFarm = mapper.fromUpdateDTO(updateDTO);
         toFarm.setId(farmId);
-        toFarm.getUpdatedAt();
+        toFarm.setUpdatedAt(LocalDateTime.now());
 
         return mapper.toResponseDTO(repository.save(toFarm));
     }

@@ -19,6 +19,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @Service
 @AllArgsConstructor
 public class FieldServiceImpl implements FieldService {
@@ -52,7 +54,7 @@ public class FieldServiceImpl implements FieldService {
 
         Field toField = mapper.fromUpdateDTO(updateDTO);
         toField.setId(fieldId);
-        toField.getUpdatedAt();
+        toField.setUpdatedAt(LocalDateTime.now());
 
         Field updatedField = repository.save(toField);
 

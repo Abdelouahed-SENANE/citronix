@@ -12,7 +12,7 @@ public record FarmResponseDTO(
         String name,
         String location,
         int surface,
-        LocalDateTime createdAt,
+        LocalDateTime creationDate,
         List<FieldEmbeddedDTO> fields
 
 ) implements Serializable {

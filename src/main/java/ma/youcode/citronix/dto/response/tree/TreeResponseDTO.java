@@ -9,5 +9,6 @@ import java.time.LocalDateTime;
 public record TreeResponseDTO(
     LocalDate plantingDate,
     FieldEmbeddedDTO field
+
 ) {
 }

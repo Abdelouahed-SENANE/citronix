@@ -7,6 +7,6 @@ public record FarmEmbeddedDTO(
         String name,
         String location,
         int surface,
-        LocalDateTime createdAt
+        LocalDateTime creationDate
 ) {
 }
