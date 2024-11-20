@@ -1,6 +1,6 @@
 package ma.youcode.citronix.services.implementations;
 
-import jakarta.persistence.EntityNotFoundException;
+import ma.youcode.citronix.exceptions.farm.FarmNotFoundException;
 import lombok.AllArgsConstructor;
 import ma.senane.utilities.generics.implementations.GenericServiceImpl;
 import ma.youcode.citronix.dto.request.farm.FarmCreateDTO;
@@ -17,19 +17,15 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
-public class FarmServiceImpl extends GenericServiceImpl<Farm> implements FarmService {
+@AllArgsConstructor
+public class FarmServiceImpl  implements FarmService {
 
     private final FarmRepository repository;
     private final FarmMapper mapper;
 
-    @Autowired
-    public FarmServiceImpl(FarmRepository repository , FarmMapper mapper) {
-        super(Farm.class);
-        this.repository = repository;
-        this.mapper = mapper;
-    }
 
     @Override
     public FarmResponseDTO create(FarmCreateDTO createDTO) {
@@ -42,10 +38,10 @@ public class FarmServiceImpl extends GenericServiceImpl<Farm> implements FarmSer
     @Override
     public FarmResponseDTO update(FarmUpdateDTO updateDTO , Long farmId) {
 
-        if (!isExist(farmId)) {
-           throw  new EntityNotFoundException("Farm not found.");
-        }
-        Farm farm = mapper.fromUpdateDTO(updateDTO);
+        Farm farm = repository.findById(farmId).orElseThrow(() -> new FarmNotFoundException("Farm not found"));
+
+
+        Farm toFarm = mapper.fromUpdateDTO(updateDTO);
         farm.setId(farmId);
 
         return mapper.toResponseDTO(repository.save(farm));
@@ -53,14 +49,16 @@ public class FarmServiceImpl extends GenericServiceImpl<Farm> implements FarmSer
 
     @Override
     public FarmResponseDTO delete(Long farmId) {
-        Farm farm = repository.findById(farmId).orElseThrow(() -> new EntityNotFoundException("Farm not found."));
+
+        Farm farm = repository.findById(farmId).orElseThrow(() -> new FarmNotFoundException("Farm not found."));
         repository.delete(farm);
         return mapper.toResponseDTO(farm);
+
     }
 
     @Override
     public FarmResponseDTO read(Long farmId) {
-        Farm farm = repository.findById(farmId).orElseThrow(() -> new EntityNotFoundException("Farm not found."));
+        Farm farm = repository.findById(farmId).orElseThrow(() -> new FarmNotFoundException("Farm not found."));
         return mapper.toResponseDTO(farm);
     }
 
@@ -71,5 +69,9 @@ public class FarmServiceImpl extends GenericServiceImpl<Farm> implements FarmSer
         Page<Farm> farms = repository.findAll(pageable);
 
         return farms.map(mapper::toResponseDTO);
+    }
+
+    public Farm getFarmById(Long farmId) {
+        return repository.findById(farmId).orElseThrow(() -> new FarmNotFoundException("Farm not found."));
     }
 }

@@ -1,6 +1,7 @@
 package ma.youcode.citronix.controller;
 
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import ma.senane.utilities.dto.SuccessDTO;
 import ma.youcode.citronix.dto.request.farm.FarmCreateDTO;
 import ma.youcode.citronix.dto.request.farm.FarmUpdateDTO;
@@ -18,16 +19,13 @@ import static ma.senane.utilities.utils.Response.success;
 
 @RestController
 @RequestMapping("/api/farm")
+@AllArgsConstructor
 public class FarmController {
 
     private final FarmService service;
 
-    @Autowired
-    public FarmController(FarmService service) {
-        this.service = service;
-    }
 
-    @GetMapping("/{id}")
+    @GetMapping("/get/{id}")
     public ResponseEntity<SuccessDTO> getFarm(@PathVariable Long id) {
         FarmResponseDTO farm = service.read(id);
         return success(200 , "Retrieved." , "farm" , farm);
@@ -40,7 +38,6 @@ public class FarmController {
 
     @PostMapping("/add")
     public ResponseEntity<SuccessDTO> addFarm(@Valid @RequestBody FarmCreateDTO createDTO ){
-        System.out.println(createDTO.surface());
         FarmResponseDTO farm = service.create(createDTO);
         return success(201 , "Created." , "farm" , farm);
     }
@@ -48,13 +45,13 @@ public class FarmController {
     @PutMapping("/update/{id}")
     public ResponseEntity<SuccessDTO> updateFarm(@PathVariable Long id ,@Valid  @RequestBody FarmUpdateDTO updateDTO ){
         FarmResponseDTO farm = service.update(updateDTO , id);
-        return success(201 , "Updated." , "farm" , farm);
+        return success(200 , "Updated." , "farm" , farm);
     }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<SuccessDTO> deleteFarm(@PathVariable Long id){
         FarmResponseDTO farm = service.delete(id);
-        return success(201 , "Deleted." , "farm" , farm);
+        return success(200 , "Deleted." , "farm" , farm);
     }
 
 

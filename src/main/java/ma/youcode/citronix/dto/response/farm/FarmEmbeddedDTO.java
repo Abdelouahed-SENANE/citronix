@@ -1,4 +1,12 @@
 package ma.youcode.citronix.dto.response.farm;
 
-public record FarmEmbeddedDTO() {
+import java.time.LocalDateTime;
+
+public record FarmEmbeddedDTO(
+        Long id,
+        String name,
+        String location,
+        int surface,
+        LocalDateTime createdAt
+) {
 }
