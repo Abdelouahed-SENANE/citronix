@@ -54,6 +54,7 @@ public class TreeServiceImpl implements TreeService {
 
         Tree toTree = mapper.fromUpdateDTO(updateDTO);
         toTree.setId(treeId);
+        toTree.getUpdatedAt();
 
         return mapper.toResponseDTO(repository.save(tree));
 

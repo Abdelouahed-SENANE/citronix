@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ma.senane.utilities.entities.BaseEntity;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +25,9 @@ public class Farm extends BaseEntity {
     private String location;
     @Column(name = "farm_surface")
     private int surface;
+
+    @Column(name = "creation_date")
+    LocalDate creationDate;
 
     @OneToMany(mappedBy = "farm" ,fetch = FetchType.EAGER)
     private List<Field> fields = new ArrayList<>();

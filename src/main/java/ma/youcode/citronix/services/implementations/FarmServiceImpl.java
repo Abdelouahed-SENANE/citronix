@@ -1,5 +1,6 @@
 package ma.youcode.citronix.services.implementations;
 
+import ma.youcode.citronix.dto.request.farm.FilterFarmDTO;
 import ma.youcode.citronix.exceptions.farm.FarmNotFoundException;
 import lombok.AllArgsConstructor;
 import ma.senane.utilities.generics.implementations.GenericServiceImpl;
@@ -9,15 +10,19 @@ import ma.youcode.citronix.dto.response.farm.FarmResponseDTO;
 import ma.youcode.citronix.entities.Farm;
 import ma.youcode.citronix.mappers.FarmMapper;
 import ma.youcode.citronix.repositories.FarmRepository;
+import ma.youcode.citronix.repositories.specification.FarmSpecification;
 import ma.youcode.citronix.services.interfaces.FarmService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+
 import java.util.List;
-import java.util.Optional;
+
+import static ma.youcode.citronix.repositories.specification.FarmSpecification.filterFarm;
 
 @Service
 @AllArgsConstructor
@@ -42,9 +47,10 @@ public class FarmServiceImpl  implements FarmService {
 
 
         Farm toFarm = mapper.fromUpdateDTO(updateDTO);
-        farm.setId(farmId);
+        toFarm.setId(farmId);
+        toFarm.getUpdatedAt();
 
-        return mapper.toResponseDTO(repository.save(farm));
+        return mapper.toResponseDTO(repository.save(toFarm));
     }
 
     @Override
@@ -73,5 +79,15 @@ public class FarmServiceImpl  implements FarmService {
 
     public Farm getFarmById(Long farmId) {
         return repository.findById(farmId).orElseThrow(() -> new FarmNotFoundException("Farm not found."));
+    }
+
+
+    @Override
+    public Page<FarmResponseDTO> filter(FilterFarmDTO filterDTO, int page, int size) {
+
+        Specification<Farm> specification = filterFarm(filterDTO);
+        Page<Farm> filteredFarms = repository.findAll(specification, PageRequest.of(page, size));
+        return filteredFarms.map(mapper::toResponseDTO);
+
     }
 }

@@ -52,6 +52,7 @@ public class FieldServiceImpl implements FieldService {
 
         Field toField = mapper.fromUpdateDTO(updateDTO);
         toField.setId(fieldId);
+        toField.getUpdatedAt();
 
         Field updatedField = repository.save(toField);
 

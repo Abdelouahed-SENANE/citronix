@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import ma.senane.utilities.dto.SuccessDTO;
 import ma.youcode.citronix.dto.request.farm.FarmCreateDTO;
 import ma.youcode.citronix.dto.request.farm.FarmUpdateDTO;
+import ma.youcode.citronix.dto.request.farm.FilterFarmDTO;
 import ma.youcode.citronix.dto.response.farm.FarmResponseDTO;
 import ma.youcode.citronix.services.interfaces.FarmService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static ma.senane.utilities.utils.Response.success;
@@ -36,9 +38,16 @@ public class FarmController {
         return success(200 , "Retrieved." , "farms" , farms);
     }
     @GetMapping("/filter")
-    public ResponseEntity<SuccessDTO> filterFarm(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
-        Page<FarmResponseDTO> farms = service.readAll(page, size);
-        return success(200 , "Retrieved." , "farms" , farms);
+    public ResponseEntity<SuccessDTO> filterFarm(@RequestParam(defaultValue = "0") int page,
+                                                 @RequestParam(defaultValue = "10") int size,
+                                                 @RequestParam(required = false) String name,
+                                                 @RequestParam(required = false) String location,
+                                                 @RequestParam(required = false) LocalDate creationDate,
+                                                 @RequestParam(required = false) Integer surface
+    ) {
+        FilterFarmDTO filterDTO = new FilterFarmDTO(name , creationDate , location, surface);
+        Page<FarmResponseDTO> filteredFarms = service.filter(filterDTO , page, size);
+        return success(200 , "Retrieved." , "farms" , filteredFarms);
     }
     @PostMapping("/add")
     public ResponseEntity<SuccessDTO> addFarm(@Valid @RequestBody FarmCreateDTO createDTO ){
