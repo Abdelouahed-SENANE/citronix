@@ -35,7 +35,11 @@ public class FarmController {
         Page<FarmResponseDTO> farms = service.readAll(page, size);
         return success(200 , "Retrieved." , "farms" , farms);
     }
-
+    @GetMapping("/filter")
+    public ResponseEntity<SuccessDTO> filterFarm(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+        Page<FarmResponseDTO> farms = service.readAll(page, size);
+        return success(200 , "Retrieved." , "farms" , farms);
+    }
     @PostMapping("/add")
     public ResponseEntity<SuccessDTO> addFarm(@Valid @RequestBody FarmCreateDTO createDTO ){
         FarmResponseDTO farm = service.create(createDTO);

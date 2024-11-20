@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ma.senane.utilities.entities.BaseEntity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "fields")
 @Getter
@@ -16,10 +19,13 @@ import ma.senane.utilities.entities.BaseEntity;
 public class Field extends BaseEntity {
 
     @Column(name = "field_surface")
-    private String surface;
+    private int surface;
 
     @ManyToOne
     @JoinColumn(name = "farm_id")
     private Farm farm;
+
+    @OneToMany(mappedBy = "field" , fetch = FetchType.EAGER)
+    private List<Tree> trees = new ArrayList<>();
 
 }

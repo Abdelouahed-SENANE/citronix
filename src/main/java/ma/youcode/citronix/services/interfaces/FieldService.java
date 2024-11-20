@@ -14,7 +14,7 @@ public interface FieldService {
     FieldResponseDTO read(Long FieldId);
     Page<FieldResponseDTO> readAll(int page , int size );
     Field getFieldById(Long FieldId);
-
+    boolean canAddTree(Field field);
 
 
 

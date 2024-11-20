@@ -15,8 +15,4 @@ public interface FarmService {
     Page<FarmResponseDTO> readAll(int page , int size );
     Farm getFarmById(Long farmId);
 
-
-
-
-
 }

@@ -99,4 +99,11 @@ public class FieldServiceImpl implements FieldService {
         }
 
     }
+
+    @Override
+    public boolean canAddTree(Field field) {
+        int maxAllowedTrees = (int) ((double) field.getSurface() / 10000 * 100);
+        return field.getTrees().size() < maxAllowedTrees;
+
+    }
 }
