@@ -32,10 +32,7 @@ public class Tree extends BaseEntity {
     List<TreeHarvest> treeHarvests = new ArrayList<>();
 
 
-    public boolean isProductive() {
-        int age =  Period.between(this.plantingDate, LocalDate.now()).getYears();
-        return age <= 20;
-    }
+
 
 
 

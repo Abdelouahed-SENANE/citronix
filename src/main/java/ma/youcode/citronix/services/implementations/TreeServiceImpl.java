@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.time.Period;
 
 @Service
 @AllArgsConstructor
@@ -36,8 +37,8 @@ public class TreeServiceImpl implements TreeService {
         if (!fieldService.canAddTree(field)) {
             throw new IllegalStateException("Maximum tree density reached. No more trees can be added to this field.");
         }
-        if (!isPlanting(createDTO.plantingDate())) {
-            throw new IllegalStateException("Planting is only allowed between March and May.");
+        if (isNotPlanting(createDTO.plantingDate())) {
+            throw new IllegalArgumentException("Planting is only allowed between March and May.");
         }
 
         Tree toTree = mapper.fromCreateDTO(createDTO);
@@ -53,8 +54,8 @@ public class TreeServiceImpl implements TreeService {
 
         Tree tree = repository.findById(treeId).orElseThrow(() -> new TreeNotFoundException("Tree not found."));
 
-        if (!isPlanting(updateDTO.plantingDate())) {
-            throw new IllegalStateException("Planting is only allowed between March and May.");
+        if (isNotPlanting(updateDTO.plantingDate())) {
+            throw new IllegalArgumentException("Planting is only allowed between March and May.");
         }
         Tree toTree = mapper.fromUpdateDTO(updateDTO);
 
@@ -95,8 +96,31 @@ public class TreeServiceImpl implements TreeService {
                 .orElseThrow(() -> new TreeNotFoundException("Tree not found."));
     }
 
-    private boolean isPlanting(LocalDate plantingDate) {
+    private boolean isNotPlanting(LocalDate plantingDate) {
         Month month = plantingDate.getMonth();
-        return month == Month.MARCH || month == Month.APRIL || month == Month.MAY;
+        return month != Month.MARCH && month != Month.APRIL && month != Month.MAY;
+    }
+
+    @Override
+    public boolean isNotProductive(LocalDate plantingDate) {
+        int age =  Period.between(plantingDate, LocalDate.now()).getYears();
+        return age > 20;
+    }
+
+    @Override
+    public double calculateQuantity(Tree tree) {
+        int age = calculateAge(tree.getPlantingDate());
+
+        if (age < 3) {
+            return 2.5;
+        } else if (age <= 10) {
+            return 12;
+        } else {
+            return 20;
+        }
+    }
+
+    private int calculateAge(LocalDate plantingDate) {
+        return Period.between(plantingDate, LocalDate.now()).getYears();
     }
 }

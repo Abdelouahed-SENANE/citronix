@@ -6,8 +6,9 @@ import ma.youcode.citronix.dto.response.tree.TreeEmbeddedDTO;
 import java.util.List;
 
 public record FieldResponseDTO(
-    int surface,
-    FarmEmbeddedDTO farm,
-    List<TreeEmbeddedDTO> trees
+        Long id,
+        int surface,
+        FarmEmbeddedDTO farm,
+        List<TreeEmbeddedDTO> trees
 ) {
 }

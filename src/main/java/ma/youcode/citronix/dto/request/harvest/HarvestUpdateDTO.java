@@ -4,9 +4,11 @@ import jakarta.validation.constraints.NotNull;
 import ma.youcode.citronix.enums.SeasonType;
 
 import java.time.LocalDate;
+import java.time.Year;
 
 public record HarvestUpdateDTO(
-        @NotNull LocalDate harvestDate,
-        @NotNull SeasonType seasonType
+        @NotNull Year year,
+        @NotNull SeasonType seasonType,
+        @NotNull Long fieldId
 ) {
 }

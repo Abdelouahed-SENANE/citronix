@@ -5,10 +5,12 @@ import ma.youcode.citronix.enums.SeasonType;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.Year;
 
 public record HarvestCreateDTO(
-        @NotNull LocalDate harvestDate,
-        @NotNull SeasonType seasonType
+        @NotNull Year year,
+        @NotNull SeasonType seasonType,
+        @NotNull Long fieldId
         ) implements Serializable {
 
 }

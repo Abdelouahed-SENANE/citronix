@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @AllArgsConstructor
+@Getter
 public enum SeasonType {
     AUTUMN("Autumn"),
     SPRING("Spring"),

@@ -9,6 +9,7 @@ import ma.senane.utilities.entities.BaseEntity;
 import ma.youcode.citronix.enums.SeasonType;
 
 import java.time.LocalDate;
+import java.time.Year;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,8 +22,8 @@ import java.util.List;
 
 public class Harvest extends BaseEntity {
 
-    @Column(name = "harvest_date")
-    private LocalDate harvestDate;
+    @Column(name = "year")
+    private Year year;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "season_type")
@@ -30,5 +31,9 @@ public class Harvest extends BaseEntity {
 
     @OneToMany(mappedBy = "harvest" , fetch = FetchType.EAGER)
     List<TreeHarvest> treeHarvests = new ArrayList<>();
+
+    @ManyToOne
+    @JoinColumn(name = "field_id")
+    private Field field;
 
 }

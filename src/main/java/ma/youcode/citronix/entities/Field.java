@@ -28,4 +28,7 @@ public class Field extends BaseEntity {
     @OneToMany(mappedBy = "field" , fetch = FetchType.EAGER)
     private List<Tree> trees = new ArrayList<>();
 
+    @OneToMany(mappedBy = "field" , fetch = FetchType.EAGER)
+    private List<Harvest> harvests = new ArrayList<>();
+
 }
