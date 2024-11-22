@@ -29,13 +29,16 @@ public class Harvest extends BaseEntity {
     private SeasonType seasonType;
 
     @Column(name = "quantity_total")
-    private int quantityTotal;
+    private double quantityTotal;
 
     @OneToMany(mappedBy = "harvest" , fetch = FetchType.EAGER)
-    List<HarvestHistory> harvestHistories = new ArrayList<>();
+    private List<HarvestHistory> harvestHistories = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "field_id")
     private Field field;
+
+    @OneToMany(mappedBy = "harvest" , fetch = FetchType.EAGER)
+    private List<Sale> sales = new ArrayList<>();
 
 }

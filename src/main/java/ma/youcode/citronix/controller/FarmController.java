@@ -8,14 +8,11 @@ import ma.youcode.citronix.dto.request.farm.FarmUpdateDTO;
 import ma.youcode.citronix.dto.request.farm.FilterFarmDTO;
 import ma.youcode.citronix.dto.response.farm.FarmResponseDTO;
 import ma.youcode.citronix.services.interfaces.FarmService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.util.List;
 
 import static ma.senane.utilities.utils.Response.success;
 

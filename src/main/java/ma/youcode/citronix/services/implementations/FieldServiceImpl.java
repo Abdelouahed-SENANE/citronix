@@ -111,11 +111,12 @@ public class FieldServiceImpl implements FieldService {
         if (fieldSurface > maxFieldSurface) {
             throw new FieldSurfaceToLargeException(ErrorType.FIELD_SIZE_LIMIT_EXCEEDED.getMessage(maxFieldSurface));
         }
+
     }
 
-    /*
-    this function Validate max surface for fields
-    **/
+    /**
+    this function Validate max surface for fields @Param int
+    */
     private void validateFieldsLimit(int size ) {
 
         if (size == 10) {

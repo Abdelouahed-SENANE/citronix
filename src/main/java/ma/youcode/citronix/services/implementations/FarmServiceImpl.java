@@ -43,7 +43,6 @@ public class FarmServiceImpl  implements FarmService {
 
         Farm farm = repository.findById(farmId).orElseThrow(() -> new FarmNotFoundException(ErrorType.NOT_FOUND.getMessage("Farm")));
 
-
         Farm toFarm = mapper.fromUpdateDTO(updateDTO);
         toFarm.setId(farmId);
         toFarm.setUpdatedAt(LocalDateTime.now());
