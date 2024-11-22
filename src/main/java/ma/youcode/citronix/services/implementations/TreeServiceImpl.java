@@ -107,17 +107,26 @@ public class TreeServiceImpl implements TreeService {
         return age > 20;
     }
 
+    // todo function
     @Override
-    public double calculateQuantity(Tree tree) {
+    public TreeResponseDTO getQteAnnualPerTree(Tree tree) {
+        return null;
+    }
+
+    private double determineAnnualQtePerTree(Tree tree) {
+
         int age = calculateAge(tree.getPlantingDate());
+        double quantity;
 
         if (age < 3) {
-            return 2.5;
+            quantity = 2.5;
         } else if (age <= 10) {
-            return 12;
+            quantity = 12;
         } else {
-            return 20;
+            quantity = 20;
         }
+        return quantity * 4;
+
     }
 
     private int calculateAge(LocalDate plantingDate) {

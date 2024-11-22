@@ -34,6 +34,7 @@ public class FieldServiceImpl implements FieldService {
     public FieldResponseDTO create(FieldCreateDTO createDTO) {
         Farm farm = farmService.getFarmById(createDTO.farmId());
 
+        verifyFarmSpace(farm , createDTO.surface());
         validateFieldsLimit(farm.getFields().size());
         validateFieldSurface(createDTO.surface() , farm.getSurface());
 
@@ -93,6 +94,17 @@ public class FieldServiceImpl implements FieldService {
                 .orElseThrow(() -> new FieldNotFoundException(ErrorType.NOT_FOUND.getMessage("Field")));
     }
 
+    private void verifyFarmSpace(Farm farm , Integer fieldSurface) {
+
+        int fieldsTotalSurface = repository.computeFieldsSurface(farm.getId());
+
+        int availableSpace = farm.getSurface() - fieldsTotalSurface ;
+        if (availableSpace < fieldSurface) {
+            throw new IllegalArgumentException(String.format("This any space for this new field on farm %s" , farm.getName()));
+        }
+
+    }
+
     private void validateFieldSurface(double fieldSurface , double farmSurface) {
         int maxFieldSurface = (int) (farmSurface / 2);
 
@@ -100,7 +112,12 @@ public class FieldServiceImpl implements FieldService {
             throw new FieldSurfaceToLargeException(ErrorType.FIELD_SIZE_LIMIT_EXCEEDED.getMessage(maxFieldSurface));
         }
     }
+
+    /*
+    this function Validate max surface for fields
+    **/
     private void validateFieldsLimit(int size ) {
+
         if (size == 10) {
             throw new MaxFieldsException(ErrorType.MAX_FIELD.getMessage());
         }

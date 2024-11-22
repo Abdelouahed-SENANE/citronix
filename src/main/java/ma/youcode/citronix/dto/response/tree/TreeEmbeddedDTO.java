@@ -1,9 +1,14 @@
 package ma.youcode.citronix.dto.response.tree;
 
+import ma.youcode.citronix.dto.response.HarvestHistory.HarvestHistoryEmbeddedDTO;
+import ma.youcode.citronix.entities.HarvestHistory;
+
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.List;
 
 public record TreeEmbeddedDTO(
-        LocalDate plantingDate
+        Long id,
+        LocalDate plantingDate,
+        List<HarvestHistoryEmbeddedDTO> harvestHistories
 ) {
 }

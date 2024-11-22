@@ -8,8 +8,6 @@ import lombok.Setter;
 import ma.senane.utilities.entities.BaseEntity;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +27,7 @@ public class Tree extends BaseEntity {
     private Field field;
 
     @OneToMany(mappedBy = "tree" , fetch = FetchType.EAGER)
-    List<TreeHarvest> treeHarvests = new ArrayList<>();
+    List<HarvestHistory> harvestHistories = new ArrayList<>();
 
 
 

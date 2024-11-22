@@ -5,18 +5,17 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ma.senane.utilities.entities.BaseEntity;
 import ma.youcode.citronix.entities.embedded.TreeHarvestId;
 
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "tree_harvests")
+@Table(name = "harvest_history")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class TreeHarvest  {
+public class HarvestHistory {
 
     @EmbeddedId
     @Column(name = "tree_harvest_id")
@@ -27,6 +26,10 @@ public class TreeHarvest  {
 
     @Column(name = "created_at")
     LocalDateTime createdAt;
+
+    @Column(name = "harvested_at")
+    LocalDateTime harvestedAt;
+
     @Column(name = "updated_at")
     LocalDateTime updatedAt;
 
@@ -43,6 +46,7 @@ public class TreeHarvest  {
     @PrePersist
     public void prePersist() {
         createdAt = LocalDateTime.now();
+        harvestedAt = LocalDateTime.now();
     }
 
     @PreUpdate

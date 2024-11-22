@@ -19,7 +19,7 @@ import java.util.List;
 public class Field extends BaseEntity {
 
     @Column(name = "field_surface")
-    private int surface;
+    private Integer surface;
 
     @ManyToOne
     @JoinColumn(name = "farm_id")

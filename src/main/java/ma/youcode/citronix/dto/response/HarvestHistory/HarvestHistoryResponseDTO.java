@@ -1,10 +1,13 @@
-package ma.youcode.citronix.dto.response.treeHarvest;
+package ma.youcode.citronix.dto.response.HarvestHistory;
 
 import ma.youcode.citronix.dto.response.harvest.HarvestEmbeddedDTO;
 import ma.youcode.citronix.dto.response.tree.TreeEmbeddedDTO;
 
-public record TreeHarvestResponseDTO(
+import java.time.LocalDateTime;
+
+public record HarvestHistoryResponseDTO(
         double quantity,
+        LocalDateTime harvestedAt,
         HarvestEmbeddedDTO harvest,
         TreeEmbeddedDTO tree
 

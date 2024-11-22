@@ -49,7 +49,7 @@ public class HarvestServiceImpl implements HarvestService {
         Harvest toHarvest = mapper.fromUpdateDTO(updateDTO);
         toHarvest.setId(harvestId);
         toHarvest.setUpdatedAt(LocalDateTime.now());
-        toHarvest.setTreeHarvests(harvest.getTreeHarvests());
+        toHarvest.setHarvestHistories(harvest.getHarvestHistories());
 
         return mapper.toResponseDTO(repository.save(toHarvest));
 

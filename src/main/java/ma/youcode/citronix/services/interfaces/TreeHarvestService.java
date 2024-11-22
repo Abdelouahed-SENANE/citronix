@@ -1,20 +1,20 @@
 package ma.youcode.citronix.services.interfaces;
 
-import ma.youcode.citronix.dto.request.treeHarvest.TreeHarvestCreateDTO;
-import ma.youcode.citronix.dto.request.treeHarvest.TreeHarvestUpdateDTO;
-import ma.youcode.citronix.dto.response.treeHarvest.TreeHarvestResponseDTO;
-import ma.youcode.citronix.entities.TreeHarvest;
+import ma.youcode.citronix.dto.request.harvestHistory.HarvestHistoryCreateDTO;
+import ma.youcode.citronix.dto.request.harvestHistory.HarvestHistoryUpdateDTO;
+import ma.youcode.citronix.dto.response.HarvestHistory.HarvestHistoryResponseDTO;
+import ma.youcode.citronix.entities.HarvestHistory;
 import ma.youcode.citronix.entities.embedded.TreeHarvestId;
 import org.springframework.data.domain.Page;
 
 public interface TreeHarvestService {
 
-    TreeHarvestResponseDTO create(TreeHarvestCreateDTO createDTO);
-    TreeHarvestResponseDTO update(TreeHarvestUpdateDTO updateDTO , TreeHarvestId TreeHarvestId);
-    TreeHarvestResponseDTO delete(TreeHarvestId TreeHarvestId);
-    TreeHarvestResponseDTO read(TreeHarvestId TreeHarvestId);
-    Page<TreeHarvestResponseDTO> readAll(int page , int size );
-    TreeHarvest getTreeHarvestById(TreeHarvestId TreeHarvestId);
+    HarvestHistoryResponseDTO create(HarvestHistoryCreateDTO createDTO);
+    HarvestHistoryResponseDTO update(HarvestHistoryUpdateDTO updateDTO , TreeHarvestId TreeHarvestId);
+    HarvestHistoryResponseDTO delete(TreeHarvestId TreeHarvestId);
+    HarvestHistoryResponseDTO read(TreeHarvestId TreeHarvestId);
+    Page<HarvestHistoryResponseDTO> readAll(int page , int size );
+    HarvestHistory getTreeHarvestById(TreeHarvestId TreeHarvestId);
 
 
 

@@ -8,7 +8,6 @@ import lombok.Setter;
 import ma.senane.utilities.entities.BaseEntity;
 import ma.youcode.citronix.enums.SeasonType;
 
-import java.time.LocalDate;
 import java.time.Year;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,8 +28,11 @@ public class Harvest extends BaseEntity {
     @Column(name = "season_type")
     private SeasonType seasonType;
 
+    @Column(name = "quantity_total")
+    private int quantityTotal;
+
     @OneToMany(mappedBy = "harvest" , fetch = FetchType.EAGER)
-    List<TreeHarvest> treeHarvests = new ArrayList<>();
+    List<HarvestHistory> harvestHistories = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "field_id")
