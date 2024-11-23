@@ -41,7 +41,8 @@ public class FarmServiceImpl  implements FarmService {
     @Override
     public FarmResponseDTO update(FarmUpdateDTO updateDTO , Long farmId) {
 
-        Farm farm = repository.findById(farmId).orElseThrow(() -> new FarmNotFoundException(ErrorType.NOT_FOUND.getMessage("Farm")));
+        Farm farm = repository.findById(farmId)
+                .orElseThrow(() -> new FarmNotFoundException(ErrorType.NOT_FOUND.getMessage("Farm")));
 
         Farm toFarm = mapper.fromUpdateDTO(updateDTO);
         toFarm.setId(farmId);

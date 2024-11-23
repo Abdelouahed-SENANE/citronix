@@ -129,6 +129,7 @@ public class TreeServiceImpl implements TreeService {
     private double calculateAnnualQtePerTree(Tree tree) {
 
         int age = calculateAge(tree.getPlantingDate());
+
         if (age > 20) {
             return 0.0;
         }

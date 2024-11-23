@@ -33,9 +33,9 @@ public class FieldServiceImpl implements FieldService {
     @Override
     public FieldResponseDTO create(FieldCreateDTO createDTO) {
         Farm farm = farmService.getFarmById(createDTO.farmId());
-        verifyFarmSpace(farm , createDTO.surface());
 
-        validateFieldsLimit(farm.getFields().size());
+        verifyFarmSpace(farm , createDTO.surface());
+        validateFieldMaxSurface(farm.getFields().size());
         validateFieldSurface(createDTO.surface() , farm.getSurface());
 
         Field field = mapper.fromCreateDTO(createDTO);
@@ -95,7 +95,6 @@ public class FieldServiceImpl implements FieldService {
     }
 
     private void verifyFarmSpace(Farm farm , Integer fieldSurface) {
-        System.out.println(farm.getId());
         Integer fieldsTotalSurface = repository.computeFieldsSurface(farm.getId());
         if (fieldsTotalSurface != null) {
             int availableSpace = farm.getSurface() - fieldsTotalSurface;
@@ -118,7 +117,7 @@ public class FieldServiceImpl implements FieldService {
     /**
     this function Validate max surface for fields @Param int
     */
-    private void validateFieldsLimit(int size ) {
+    private void validateFieldMaxSurface(int size ) {
 
         if (size == 10) {
             throw new MaxFieldsException(ErrorType.MAX_FIELD.getMessage());
@@ -128,6 +127,7 @@ public class FieldServiceImpl implements FieldService {
 
     @Override
     public boolean canAddTree(Field field) {
+
         int maxAllowedTrees = (int) ((double) field.getSurface() / 10000 * 100);
         return field.getTrees().size() < maxAllowedTrees;
 
