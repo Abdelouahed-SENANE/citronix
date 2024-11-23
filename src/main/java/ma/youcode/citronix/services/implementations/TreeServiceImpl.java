@@ -1,6 +1,7 @@
 package ma.youcode.citronix.services.implementations;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import ma.youcode.citronix.dto.request.tree.TreeCreateDTO;
 import ma.youcode.citronix.dto.request.tree.TreeUpdateDTO;
 import ma.youcode.citronix.dto.response.tree.TreeResponseDTO;
@@ -21,6 +22,7 @@ import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.Period;
 
+@Slf4j
 @Service
 @AllArgsConstructor
 public class TreeServiceImpl implements TreeService {
@@ -107,25 +109,35 @@ public class TreeServiceImpl implements TreeService {
         return age > 20;
     }
 
-    // todo function
     @Override
-    public TreeResponseDTO getQteAnnualPerTree(Tree tree) {
-        return null;
+    public TreeResponseDTO getQteAnnualPerTree(Long treeId) {
+
+        Tree tree = repository.findById(treeId).orElseThrow(() -> new TreeNotFoundException("Tree not found."));
+        updateTreeDetail(tree);
+        return mapper.toResponseDTO(tree);
+
     }
 
-    private double determineAnnualQtePerTree(Tree tree) {
+    private void updateTreeDetail(Tree tree) {
+
+        Integer treeAge = calculateAge(tree.getPlantingDate());
+        Double productivityAnnul = calculateAnnualQtePerTree(tree);
+        tree.setAge(treeAge);
+        tree.setProductivityAnnual(productivityAnnul);
+
+    }
+    private double calculateAnnualQtePerTree(Tree tree) {
 
         int age = calculateAge(tree.getPlantingDate());
-        double quantity;
-
-        if (age < 3) {
-            quantity = 2.5;
-        } else if (age <= 10) {
-            quantity = 12;
-        } else {
-            quantity = 20;
+        if (age > 20) {
+            return 0.0;
         }
-        return quantity * 4;
+        if (age < 3) {
+            return  2.5 * 4;
+        } else if (age <= 10) {
+            return  12 * 4;
+        }
+        return 20 * 4;
 
     }
 

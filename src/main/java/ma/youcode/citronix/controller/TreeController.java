@@ -25,6 +25,13 @@ public class TreeController {
         TreeResponseDTO tree = service.read(id);
         return success(200 , "Retrieved." , "tree" , tree);
     }
+
+    @GetMapping("/productivity-annual/{id}")
+    public ResponseEntity<SuccessDTO> getTreeProductivityAnnual(@PathVariable Long id) {
+        TreeResponseDTO tree = service.getQteAnnualPerTree(id);
+        return success(200 , "Retrieved." , "tree" , tree);
+    }
+
     @GetMapping("/all")
     public ResponseEntity<SuccessDTO> getTree(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
         Page<TreeResponseDTO> trees = service.readAll(page, size);

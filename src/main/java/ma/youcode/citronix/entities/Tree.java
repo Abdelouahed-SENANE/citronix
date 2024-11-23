@@ -29,8 +29,11 @@ public class Tree extends BaseEntity {
     @OneToMany(mappedBy = "tree" , fetch = FetchType.EAGER)
     List<HarvestHistory> harvestHistories = new ArrayList<>();
 
+    @Transient
+    private Double productivityAnnual;
 
-
+    @Transient
+    private Integer age;
 
 
 

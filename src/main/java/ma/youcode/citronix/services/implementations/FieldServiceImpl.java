@@ -33,8 +33,8 @@ public class FieldServiceImpl implements FieldService {
     @Override
     public FieldResponseDTO create(FieldCreateDTO createDTO) {
         Farm farm = farmService.getFarmById(createDTO.farmId());
-
         verifyFarmSpace(farm , createDTO.surface());
+
         validateFieldsLimit(farm.getFields().size());
         validateFieldSurface(createDTO.surface() , farm.getSurface());
 
@@ -95,12 +95,13 @@ public class FieldServiceImpl implements FieldService {
     }
 
     private void verifyFarmSpace(Farm farm , Integer fieldSurface) {
-
-        int fieldsTotalSurface = repository.computeFieldsSurface(farm.getId());
-
-        int availableSpace = farm.getSurface() - fieldsTotalSurface ;
-        if (availableSpace < fieldSurface) {
-            throw new IllegalArgumentException(String.format("This any space for this new field on farm %s" , farm.getName()));
+        System.out.println(farm.getId());
+        Integer fieldsTotalSurface = repository.computeFieldsSurface(farm.getId());
+        if (fieldsTotalSurface != null) {
+            int availableSpace = farm.getSurface() - fieldsTotalSurface;
+            if (availableSpace < fieldSurface) {
+                throw new IllegalArgumentException(String.format("This any space for this new field on farm %s" , farm.getName()));
+            }
         }
 
     }

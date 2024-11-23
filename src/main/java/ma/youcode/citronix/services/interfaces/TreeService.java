@@ -18,6 +18,6 @@ public interface TreeService {
     Page<TreeResponseDTO> readAll(int page , int size );
     Tree getTreeById(Long TreeId);
     boolean isNotProductive(LocalDate plantingDate);
-    TreeResponseDTO getQteAnnualPerTree(Tree tree);
+    TreeResponseDTO getQteAnnualPerTree(Long treeId);
 
 }

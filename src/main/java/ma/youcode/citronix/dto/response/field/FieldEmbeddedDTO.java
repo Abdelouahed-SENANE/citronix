@@ -6,8 +6,8 @@ import java.util.List;
 
 public record FieldEmbeddedDTO(
         Long id,
-        int surface,
-        List<TreeEmbeddedDTO> trees
+        int surface
+//        List<TreeEmbeddedDTO> trees
 
 ) {
 }

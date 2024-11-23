@@ -7,5 +7,5 @@ import org.springframework.data.repository.query.Param;
 
 public interface FieldRepository extends JpaRepository<Field, Long> {
     @Query("select sum(f.surface) from Field f where f.farm.id = :farmId")
-    int computeFieldsSurface(@Param("farmId") Long farmId);
+    Integer computeFieldsSurface(@Param("farmId") Long farmId);
 }
