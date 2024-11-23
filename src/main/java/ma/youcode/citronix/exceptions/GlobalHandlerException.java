@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import static ma.senane.utilities.utils.Response.error;
+
 @RestControllerAdvice
 public class GlobalHandlerException extends AbstractGlobalHandlerException {
 
