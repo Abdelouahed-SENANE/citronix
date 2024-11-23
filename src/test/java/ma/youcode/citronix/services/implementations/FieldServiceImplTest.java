@@ -126,6 +126,7 @@ class FieldServiceImplTest {
         assertEquals("Field surface cannot be greater than 1250 m²", e.getMessage());
         verify(farmService).getFarmById(farm.getId());
         verify(fieldRepository).computeFieldsSurface(1L);
+
         verifyNoInteractions(fieldMapper);
 
     }
