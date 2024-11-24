@@ -14,6 +14,8 @@ import ma.youcode.citronix.mappers.FieldMapper;
 import ma.youcode.citronix.repositories.FieldRepository;
 import ma.youcode.citronix.services.interfaces.FarmService;
 import ma.youcode.citronix.services.interfaces.FieldService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -25,6 +27,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class FieldServiceImpl implements FieldService {
 
+    private static final Logger log = LogManager.getLogger(FieldServiceImpl.class);
     private final FieldRepository repository;
     private final FieldMapper mapper;
     private final FarmService farmService;
@@ -47,18 +50,27 @@ public class FieldServiceImpl implements FieldService {
     }
 
     @Override
-    public FieldResponseDTO update(FieldUpdateDTO updateDTO , Long fieldId) {
+    public FieldResponseDTO update(FieldUpdateDTO dto , Long fieldId) {
 
         Field field = repository.findById(fieldId)
                 .orElseThrow(() -> new FieldNotFoundException(ErrorType.NOT_FOUND.getMessage("Field")));
 
-        validateFieldSurface(updateDTO.surface() , field.getFarm().getSurface());
+        if (!dto.hasData()) {
+            throw new FieldNotFoundException(ErrorType.NO_DATA_PROVIDED.getMessage());
+        }
 
-        Field toField = mapper.fromUpdateDTO(updateDTO);
-        toField.setId(fieldId);
-        toField.setUpdatedAt(LocalDateTime.now());
+        if (dto.surface() != null) {
+            validateFieldSurface(dto.surface() , field.getFarm().getSurface());
+            verifyFieldSpaceForTree(field , dto.surface());
+            field.setSurface(dto.surface());
+        }
+        if (dto.farmId() != null) {
+            Farm farm = farmService.getFarmById(dto.farmId());
+            field.setFarm(farm);
+        }
 
-        Field updatedField = repository.save(toField);
+        field.setUpdatedAt(LocalDateTime.now());
+        Field updatedField = repository.save(field);
 
         return mapper.toResponseDTO(updatedField);
     }
@@ -104,7 +116,7 @@ public class FieldServiceImpl implements FieldService {
         }
 
     }
-
+    // field represent 50% from farm like a max value.
     private void validateFieldSurface(double fieldSurface , double farmSurface) {
         int maxFieldSurface = (int) (farmSurface / 2);
 
@@ -128,8 +140,20 @@ public class FieldServiceImpl implements FieldService {
     @Override
     public boolean canAddTree(Field field) {
 
-        int maxAllowedTrees = (int) ((double) field.getSurface() / 10000 * 100);
+        int maxAllowedTrees =  (int)((double) field.getSurface() / 10000 * 100);
         return field.getTrees().size() < maxAllowedTrees;
 
     }
+
+    private void verifyFieldSpaceForTree( Field field, int newSurface) {
+        int newSpaceAllowed = (int)((double) newSurface / 10000 * 100);
+        log.warn(newSpaceAllowed);
+        if (field.getTrees().size() > newSpaceAllowed) {
+            throw new IllegalArgumentException(String.format(
+                    "The field size of %d m² allows for a maximum of %d trees, but this field currently has %d trees.",
+                    newSurface, newSpaceAllowed, field.getTrees().size()));
+        }
+    }
+
+
 }

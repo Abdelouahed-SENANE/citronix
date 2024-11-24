@@ -28,6 +28,7 @@ public class SaleController {
         SaleResponseDTO sale = service.read(id);
         return success(200 , "Retrieved." , "sale" , sale);
     }
+
     @GetMapping("/all")
     public ResponseEntity<SuccessDTO> getSale(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
         Page<SaleResponseDTO> sales = service.readAll(page, size);

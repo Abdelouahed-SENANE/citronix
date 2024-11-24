@@ -1,6 +1,8 @@
 package ma.youcode.citronix.services.implementations;
 
+import lombok.extern.log4j.Log4j2;
 import ma.youcode.citronix.dto.request.farm.FilterFarmDTO;
+import ma.youcode.citronix.entities.Field;
 import ma.youcode.citronix.enums.ErrorType;
 import ma.youcode.citronix.exceptions.farm.FarmNotFoundException;
 import lombok.AllArgsConstructor;
@@ -22,9 +24,10 @@ import java.time.LocalDateTime;
 
 import static ma.youcode.citronix.repositories.specification.FarmSpecification.filterFarm;
 
+@Log4j2
 @Service
 @AllArgsConstructor
-public class FarmServiceImpl  implements FarmService {
+public class FarmServiceImpl implements FarmService {
 
     private final FarmRepository repository;
     private final FarmMapper mapper;
@@ -39,16 +42,29 @@ public class FarmServiceImpl  implements FarmService {
     }
 
     @Override
-    public FarmResponseDTO update(FarmUpdateDTO updateDTO , Long farmId) {
+    public FarmResponseDTO update(FarmUpdateDTO dto, Long farmId) {
 
         Farm farm = repository.findById(farmId)
                 .orElseThrow(() -> new FarmNotFoundException(ErrorType.NOT_FOUND.getMessage("Farm")));
 
-        Farm toFarm = mapper.fromUpdateDTO(updateDTO);
-        toFarm.setId(farmId);
-        toFarm.setUpdatedAt(LocalDateTime.now());
+        if (!dto.hasData()) {
+            throw new FarmNotFoundException(ErrorType.NO_DATA_PROVIDED.getMessage());
+        }
 
-        return mapper.toResponseDTO(repository.save(toFarm));
+        if (dto.name() != null) {
+            farm.setName(dto.name());
+        }
+        if (dto.surface() != null) {
+            verifyValidSurface(farm, dto.surface());
+            farm.setSurface(dto.surface());
+        }
+        if (dto.location() != null) {
+            farm.setLocation(dto.location());
+        }
+
+        farm.setUpdatedAt(LocalDateTime.now());
+
+        return mapper.toResponseDTO(repository.save(farm));
     }
 
     @Override
@@ -88,4 +104,27 @@ public class FarmServiceImpl  implements FarmService {
         return filteredFarms.map(mapper::toResponseDTO);
 
     }
+
+    public void verifyValidSurface(Farm farm, int newSurface) {
+
+        int usedSpaceOnFarm = calcUsedSpaceOnFarm(farm);
+
+        if (usedSpaceOnFarm > newSurface) {
+            throw new IllegalArgumentException(String.format(
+                    "The new surface of %d is invalid because it must be at least %d.",
+                    newSurface, usedSpaceOnFarm));
+        }
+
+
+    }
+
+    private int calcUsedSpaceOnFarm(Farm farm) {
+        return farm.getFields().stream()
+                .mapToInt(Field::getSurface)
+                .sum();
+
+    }
 }
+
+
+

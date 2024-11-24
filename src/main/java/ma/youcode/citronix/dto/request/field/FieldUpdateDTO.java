@@ -5,7 +5,10 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
 public record FieldUpdateDTO(
-        @NotNull @Min(1000) Integer surface,
-        @NotNull Long farmId
+        @Min(1000) Integer surface,
+        Long farmId
 ) {
+    public boolean hasData() {
+        return surface != null || farmId != null;
+    }
 }

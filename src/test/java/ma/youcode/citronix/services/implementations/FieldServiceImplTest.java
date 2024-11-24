@@ -49,7 +49,6 @@ class FieldServiceImplTest {
 
         field = new Field();
         field.setId(1L);
-//        field.setSurface(1000);
         farm = new Farm();
         farm.setId(1L);
         farm.setSurface(2500);
@@ -82,6 +81,7 @@ class FieldServiceImplTest {
 
     @Test
     public void testCaseCreateField_whenFarmSpaceHasNoSpace() {
+
         when(farmService.getFarmById(farm.getId())).thenReturn(farm);
         when(fieldRepository.computeFieldsSurface(1L)).thenReturn(2000);
 
