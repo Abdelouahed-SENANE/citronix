@@ -29,7 +29,7 @@ public class Farm extends BaseEntity {
     @Column(name = "creation_date")
     LocalDate creationDate;
 
-    @OneToMany(mappedBy = "farm" ,fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "farm" ,fetch = FetchType.EAGER , cascade = CascadeType.ALL)
     private List<Field> fields = new ArrayList<>();
 
 }

@@ -31,14 +31,14 @@ public class Harvest extends BaseEntity {
     @Column(name = "quantity_total")
     private double quantityTotal;
 
-    @OneToMany(mappedBy = "harvest" , fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "harvest" , fetch = FetchType.EAGER , cascade = CascadeType.ALL)
     private List<HarvestHistory> harvestHistories = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "field_id")
     private Field field;
 
-    @OneToMany(mappedBy = "harvest" , fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "harvest" , fetch = FetchType.EAGER , cascade = CascadeType.ALL)
     private List<Sale> sales = new ArrayList<>();
 
 }

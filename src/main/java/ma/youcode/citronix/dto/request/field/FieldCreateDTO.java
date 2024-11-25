@@ -10,4 +10,5 @@ public record FieldCreateDTO(
         @NotNull Long farmId
         ) implements Serializable {
 
+
 }

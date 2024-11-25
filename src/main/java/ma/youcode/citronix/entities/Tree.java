@@ -26,7 +26,7 @@ public class Tree extends BaseEntity {
     @JoinColumn(name = "field_id")
     private Field field;
 
-    @OneToMany(mappedBy = "tree" , fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "tree" , fetch = FetchType.EAGER , cascade = CascadeType.ALL)
     List<HarvestHistory> harvestHistories = new ArrayList<>();
 
     @Transient

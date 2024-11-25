@@ -25,10 +25,10 @@ public class Field extends BaseEntity {
     @JoinColumn(name = "farm_id")
     private Farm farm;
 
-    @OneToMany(mappedBy = "field" , fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "field" , fetch = FetchType.EAGER , cascade = CascadeType.ALL)
     private List<Tree> trees = new ArrayList<>();
 
-    @OneToMany(mappedBy = "field" , fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "field" , fetch = FetchType.EAGER , cascade = CascadeType.ALL)
     private List<Harvest> harvests = new ArrayList<>();
 
 }

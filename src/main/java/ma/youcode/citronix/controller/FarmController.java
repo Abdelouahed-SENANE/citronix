@@ -13,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-
 import static ma.senane.utilities.utils.Response.success;
 
 @RestController
@@ -46,6 +45,7 @@ public class FarmController {
         Page<FarmResponseDTO> filteredFarms = service.filter(filterDTO , page, size);
         return success(200 , "Retrieved." , "farms" , filteredFarms);
     }
+
     @PostMapping("/add")
     public ResponseEntity<SuccessDTO> addFarm(@Valid @RequestBody FarmCreateDTO createDTO ){
         FarmResponseDTO farm = service.create(createDTO);
